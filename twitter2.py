@@ -1,7 +1,10 @@
-import urllib.request, urllib.parse, urllib.error
-import twurl
+import urllib.request
+import urllib.parse
+import urllib.error
 import json
 import ssl
+import twurl
+
 
 # https://apps.twitter.com/
 # Create App and get the four strings, put them in hidden.py
@@ -16,9 +19,10 @@ ctx.verify_mode = ssl.CERT_NONE
 while True:
     print('')
     acct = input('Enter Twitter Account:')
-    if (len(acct) < 1): break
+    if len(acct) < 1:
+        break
     url = twurl.augment(TWITTER_URL,
-                        {'screen_name': acct, 'count': '5'})
+                        {'screen_name': acct, 'count': '10'})
     print('Retrieving', url)
     connection = urllib.request.urlopen(url, context=ctx)
     data = connection.read().decode()
@@ -29,10 +33,10 @@ while True:
     headers = dict(connection.getheaders())
     print('Remaining', headers['x-rate-limit-remaining'])
 
-    for u in js['users']:
-        print(u['screen_name'])
-        if 'status' not in u:
+    for user in js['users']:
+        print(user['screen_name'])
+        if 'status' not in user:
             print('   * No status found')
             continue
-        s = u['status']['text']
-        print('  ', s[:50])
+        status = user['status']['text']
+        print('  ', status[:50])

@@ -1,4 +1,6 @@
-import urllib.request, urllib.parse, urllib.error
+import urllib.request
+import urllib.parse
+import urllib.error
 import oauth
 import hidden
 
@@ -16,6 +18,7 @@ def augment(url, parameters):
                     parameters=parameters)
     oauth_request.sign_request(oauth.OAuthSignatureMethod_HMAC_SHA1(),
                                consumer, token)
+    #print(parameters, oauth_request.to_url())
     return oauth_request.to_url()
 
 
