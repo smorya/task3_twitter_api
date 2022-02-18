@@ -1,3 +1,4 @@
+"""task3"""
 import urllib.request
 import urllib.parse
 import urllib.error
@@ -23,6 +24,10 @@ ctx.verify_mode = ssl.CERT_NONE
 app = Flask(__name__)
 
 def make_info(acct):
+    """
+    (str) -> dict
+    Function that makes a dictionary with user's locations and names.
+    """
     if len(acct) < 1:
         sys.exit()
     url = twurl.augment(TWITTER_URL,
@@ -38,6 +43,10 @@ def make_info(acct):
 
 
 def make_coordinates(users):
+    """
+    (dict) -> dict
+    Function that makes dict of users and coordinates.
+    """
     geolocator = Nominatim(user_agent='locations')
     locationsdct = {}
     for key, value in users.items():
@@ -60,10 +69,16 @@ def make_map(locationsdct):
 
 @app.route("/")
 def home():
+    """
+    Routes to the basic page
+    """
     return render_template("base.html")
 
 @app.route("/login", methods=["POST", "GET"])
 def login():
+    """"login page when user parses the account.
+    Routes to the 
+    """
     if request.method == "POST":
         username = request.form['screen_name']
         return redirect(url_for("user", usr= username))
@@ -72,6 +87,9 @@ def login():
 
 @app.route("/<usr>")
 def user(usr):
+    """
+    Function that makes a map conducting all functions. 
+    """
     return make_map(make_coordinates(make_info(usr)))
 
 
